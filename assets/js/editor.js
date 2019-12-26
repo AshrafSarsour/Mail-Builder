@@ -1768,7 +1768,7 @@
 					oldHTML = $template.html(),
 					body = '<body>' + oldHTML + '</body>';
 				
-				$.post(window.base + '/ENDPOINT', {mail:val, body:body}).done(function(returns){
+				$.post(window.base + '/TESTING_ENDPOINT', {mail:val, body:body}).done(function(returns){
 					if(returns == 'true')
 					{
 						$input.parent().after('<div class="alert alert-success" role="alert">Test email was successfully sent!</div>');
@@ -2065,7 +2065,36 @@
         if(parent)
             parent.toggleClass('in');
     });
-	
+		/* Save Template Form */
+		$(document).on('click','#template-submit', function(e){
+			e.preventDefault();
+			var $button = $(this),
+				$input = $('#template-input'),
+				val = $input.val().trim(); 
+			$input.parent().parent().find('.alert').remove();
+			$button.text('Processing ').prepend('<i class="fa fa-spinner"></i>');
+			if(val.length > 0)
+			{ 
+				  $.post({url:'SAVE_END_POINT', data:{ body: body, name:val},dataType:'json'}).done(function(returns){
+						if(returns.status == true)
+						{
+							$input.parent().after('<div class="alert alert-success" role="alert">'+returns.message+'</div>');
+							$input.parent().remove();
+							$button.text('Done').attr({'data-dismiss':'modal', 'id':null}).removeClass('btn-success').addClass('btn-primary').prepend('<span class="glyphicon glyphicon-ok"></span> ');
+						}
+						else
+						{
+							$input.parent().after('<div class="alert alert-danger" role="alert">'+returns.message+'</div>');
+						}
+					}).fail(function(a,b,c){
+						console.log(a,b,c);
+						$input.parent().after('<div class="alert alert-danger" role="alert">'+returns.message+'</div>');
+					});
+			 
+			}
+			else
+				$input.parent().after('<div class="alert alert-danger" role="alert">'+translations.must+' </div>');
+		});
     
 	/* When DOM is ready */
 	$(document).ready(function(){

@@ -36,9 +36,21 @@ Mail Builder uses ?
 
 Just Fork it and you are good to go . 
 
-### Development
+### Development 
 
 Want to contribute? Great!
 Mail Builder , Make a change in your file and instantaneously see your updates!
 Open your favorite Terminal and create a branch feature PR it and i will 
 discuss it with you .
+
+## Techincal Stuff 
+
+##### in the  below function you need to add your endpoint to submit the testing template .
+replace TESTING_ENDPOINT with your test template endpoint
+$(document).on('click','#test-submit', function(e){
+	});
+##### in the  below function you need to add your endpoint to submit the template .
+replace SAVE_END_POINT with your save template endpoint
+$(document).on('click','#template-submit', function(e){
+	});
+ 
