@@ -872,28 +872,14 @@
                             else
                                 url = '';
                         
-                        tooltip+="<div class='input-group'>\
-                            <span class='input-group-addon'><span class='glyphicon glyphicon-picture'></span></span>\
-                            <input type='text' value='" + src.trim() + "' class='form-control add-image' data-type='src' data-id='" + id + "' placeholder='Insert Image URL' >\
-                        </div>";
+                          
+						tooltip+="<div class='input-group'>\
+						<span class='input-group-addon'><span class='glyphicon glyphicon-link'></span></span>\
+						<input type='file' value='" + url.trim() + "' class='form-control add-image' data-type='file' data-id='" + id + "' placeholder='Upload Image Link' >\
+					</div>";
                         
                         tooltip+="<div class='br'></div>";
-                        
-                        tooltip+="<div class='input-group'>\
-                            <span class='input-group-addon'><span class='glyphicon glyphicon-link'></span></span>\
-                            <input type='text' value='" + url.trim() + "' class='form-control add-image' data-type='url' data-id='" + id + "' placeholder='Insert Image Link' >\
-                        </div>";
-                        
-                        tooltip+="<div class='br'></div>";
-                        
-                        tooltip+="<div class='text-left'>\
-                                    <button type='button' class='btn btn-default' id='CreateDynamicImage'>\
-                                        <span class='glyphicon glyphicon-picture'></span> Create Generic Image\
-                                    </button> \
-                                    <button type='button' class='btn btn-danger hidden' id='DeleteDynamicImage'>\
-                                        <span class='glyphicon glyphicon-remove'></span> Remove Generic Image\
-                                    </button>\
-                            </div>";
+                      
                     break;
                         
                         
@@ -1589,40 +1575,37 @@
 			};
 			img.src = value;
 		
-		}else if(type == 'alt')
+		}else if(type == 'alt'){
 			$('#add-' + id ).attr('alt',value);
-		else if(type == 'title')
+		}else if(type == 'title'){
 			$('#add-' + id ).attr('title',value);
-		else if(type == 'url'){
-			
-			if($.validate(value, 'URL')===false)
-				value = null;			
-			
-			var data = $('#add-' + id ),
-				container = data.parents('td'),
-				findImg = $(container[0]).html().match(/(<img.*?>)/i), img = null;
-
-			if(null !== findImg)
-				img = findImg[0].replace(/(<img.*?>)/i, '$1');
-			
-			if(null !== value)
-			{
-				var link = '<center><a href="' + value + '" target="_blank">' + img + '</a></center>';
-				$(container[0]).find('a,img,center').remove();
-				$(container[0]).append(link);
+		}else if (type == 'file') {
+				var datafile = new FormData();
+				datafile.append("file", $(this)[0].files[0]);
+				$.post({
+					url: 'UPLOAD_FILE_ENDPOINT',
+					enctype: 'multipart/form-data',
+					data: datafile,
+					method: 'POST',
+					processData: false,
+					contentType: false,
+					cache: false,
+					success: function (data) {
+						data = JSON.parse(data); 
+						if (data.file_name !== '' && data.status ==='success') {
+							var image_path = site_url+'/ImagesFolder/' + data.file_name;
+							$('#add-' + id).attr('src', image_path); 
+								if($('#add-' + id ).attr('alt') == '')
+								{
+										$('#add-' + id ).attr('alt',image_path);
+								}
+						}else{
+							alert(data.errors[0]);
+						}
+					}
+				});
 			}
-			else
-			{
-				findA = $(container[0]).find('a');
-				findB = $(container[0]).find('center');
-				if(typeof findA !== 'undefined' && findA.length > 0){
-					findA.remove();
-					findB.remove();
-					$(container[0]).append('<center>' + img + '</center>');
-				}
-			}
-		}
-	}));
+		}));
 	
 	// Update link
 	$(document).on('input change paste keyup','.add-link',$.debounce(250,function(e){

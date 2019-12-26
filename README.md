@@ -54,8 +54,15 @@ discuss it with you .
 replace TESTING_ENDPOINT with your test template endpoint
 $(document).on('click','#test-submit', function(e){
 	});
+  
 ##### in the  below function you need to add your endpoint to submit the template .
 replace SAVE_END_POINT with your save template endpoint
 $(document).on('click','#template-submit', function(e){
 	});
+
+ ##### in the  below function you need to add your endpoint to upload the images .
+replace UPLOAD_FILE_ENDPOINT with your upload file endpoint
+$(document).on('input change paste keyup','.add-image',$.debounce(350,function(e){
+	});
+
  
