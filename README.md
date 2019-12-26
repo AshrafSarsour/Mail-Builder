@@ -10,12 +10,17 @@ handle mail building templates and make email campaigns.
   - Drag and Drop .
   - Open Source .
   - high performance .
+
+its simple let your clients to send birthday cards , some happy wishes or anniversary cards ( i love those )
+or any thing you might see its suitable and dont reinvent a wheel right ? this builder saves time for you 
+you just need to add your endpoint and customize it as you want .
+
 # Components !
   - Adding Text , Image , button , URL , Divider .
   - Controlling height and also width and colors for each section separately .
   - sending testing Email to be validated before publishing . 
   - insert external urls and ability to save the designed template .
-  - 
+
 You can also:
   - apply it stand alone service . 
   - change its design and personlize it based on client or account .
